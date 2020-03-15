@@ -3,6 +3,7 @@ package by.bsu.boring_figures.actually_figures;
 
 import java.awt.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author shchors_vs
@@ -22,23 +23,24 @@ public class Polygon extends Figure2D {
         return points;
     }
 
-    @Override
-    public void draw(Graphics2D graphics2D) {
-        int[] xPoints = points.stream().mapToInt(Point::getX).toArray();
-        int[] yPoints = points.stream().mapToInt(Point::getY).toArray();
-        java.awt.Polygon p = new java.awt.Polygon(xPoints, yPoints, points.size());
-        graphics2D.setColor(getBorderColor());
-        graphics2D.drawPolygon(p);
-        graphics2D.setColor(getFillColor());
-        graphics2D.fillPolygon(p);
-    }
-
     /**
      * @param newLocation newCenter
      */
     @Override
     public void move(Point newLocation) {
-        // FIXME: 3/9/20
+        int shiftX = newLocation.getX() - location().getX();
+        int shiftY = newLocation.getY() - location().getY();
+        this.points = this.getPoints().stream()
+                .map(p -> new Point(p.getX() + shiftX, p.getY() + shiftY))
+                .collect(Collectors.toList());
+
+        initCenter(points);
     }
 
+    @Override
+    protected Shape getShape() {
+        int[] xPoints = points.stream().mapToInt(Point::getX).toArray();
+        int[] yPoints = points.stream().mapToInt(Point::getY).toArray();
+        return new java.awt.Polygon(xPoints, yPoints, points.size());
+    }
 }

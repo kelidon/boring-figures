@@ -35,23 +35,25 @@ public class Ellipse extends Figure2D {
         return bottomRight;
     }
 
-    @Override
-    public void draw(Graphics2D graphics2D) {
-        int w = bottomRight.getX() - topLeft.getX();
-        int h = bottomRight.getY() - topLeft.getY();
-        Ellipse2D ellipse = new Ellipse2D.Float(topLeft.getX(), topLeft.getY(), w, h);
-        graphics2D.setColor(getBorderColor());
-        graphics2D.draw(ellipse);
-        graphics2D.setColor(getFillColor());
-        graphics2D.fill(ellipse);
-    }
-
     /**
      * @param newCenter points
      */
     @Override
     public void move(Point newCenter) {
-        // FIXME: 3/9/20
+        int shiftX = newCenter.getX() - location().getX();
+        int shiftY = newCenter.getY() - location().getY();
+        topLeft.setX(topLeft.getX() + shiftX);
+        topLeft.setX(topLeft.getX() + shiftX);
+        bottomRight.setX(bottomRight.getX() + shiftX);
+        bottomRight.setY(bottomRight.getY() + shiftY);
+
+        initCenter(Arrays.asList(topLeft, bottomRight));
     }
 
+    @Override
+    protected Shape getShape() {
+        int w = bottomRight.getX() - topLeft.getX();
+        int h = bottomRight.getY() - topLeft.getY();
+        return new Ellipse2D.Float(topLeft.getX(), topLeft.getY(), w, h);
+    }
 }

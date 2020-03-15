@@ -36,6 +36,7 @@ public class LineSegment extends Figure1D {
 
     @Override
     public void draw(Graphics2D g2d) {
+        g2d.setColor(getBorderColor());
         g2d.drawLine(
                 firstPoint.getX(), firstPoint.getY(),
                 secondPoint.getX(), secondPoint.getY()
@@ -51,4 +52,16 @@ public class LineSegment extends Figure1D {
         throw new NotImplementedException();
     }
 
+    @Override
+    public boolean contains(Point point) {
+        final int magicNumber = 5;
+        Polygon pseudoLine = new Polygon(Arrays.asList(
+                new Point(firstPoint.getX(), firstPoint.getY() - magicNumber),
+                new Point(secondPoint.getX(), secondPoint.getY() - magicNumber),
+                new Point(secondPoint.getX(), secondPoint.getY() + magicNumber),
+                new Point(firstPoint.getX(), firstPoint.getY() + magicNumber)
+        ));
+
+        return pseudoLine.contains(point);
+    }
 }

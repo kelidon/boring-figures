@@ -3,6 +3,7 @@ package by.bsu.boring_figures.actually_figures;
 
 import java.awt.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author shchors_vs
@@ -30,11 +31,26 @@ public class Polyline extends Figure1D {
         graphics2D.drawPolyline(xPoints, yPoints, points.size());
     }
 
+    @Override
+    public boolean contains(Point point) {
+        for (int i = 1; i < points.size(); i++) {
+            LineSegment lineSegment = new LineSegment(points.get(i - 1), points.get(i));
+            if (lineSegment.contains(point)) return true;
+        }
+        return false;
+    }
+
     /**
      * @param newLocation
      */
     @Override
     public void move(Point newLocation) {
-        // FIXME: 3/9/20
+        int shiftX = newLocation.getX() - location().getX();
+        int shiftY = newLocation.getY() - location().getY();
+        this.points = this.getPoints().stream()
+                .map(p -> new Point(p.getX() + shiftX, p.getY() + shiftY))
+                .collect(Collectors.toList());
+
+        initCenter(points);
     }
 }
