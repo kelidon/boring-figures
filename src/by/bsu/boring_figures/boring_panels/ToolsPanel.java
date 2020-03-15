@@ -7,12 +7,8 @@ import by.bsu.boring_figures.boring_components.ColorChooserButton;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
-
-import static by.bsu.boring_figures.boring_panels.DrawPanel.points;
 
 
 public class ToolsPanel extends JPanel {
@@ -41,30 +37,11 @@ public class ToolsPanel extends JPanel {
         this.setLayout(new GridLayout(15, 1));
         this.setSize(50, 200);
 
-        Label label = new Label("Interaction mode");
-        add(label);
-
-        JRadioButton draw = new JRadioButton("draw", true);
-        JRadioButton move = new JRadioButton("move");
-
-        ButtonGroup modesButtons = new ButtonGroup();
-        modesButtons.add(draw);
-        modesButtons.add(move);
-        add(draw);
-        add(move);
-
-
-        label = new Label("Figures");
+        Label label = new Label("Figures");
         add(label);
 
         figuresComboBox = new JComboBox<>();
         figuresBinding.forEach((e1, e2) -> figuresComboBox.addItem(e1));
-        figuresComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                points.clear();
-            }
-        });
         add(figuresComboBox);
 
         label = new Label("Border color");
